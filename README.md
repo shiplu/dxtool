@@ -42,3 +42,5 @@ Usage
 
     print_r($data);
     ?>
+    
+Also check the example.php file.
