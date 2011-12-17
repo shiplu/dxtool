@@ -1,7 +1,4 @@
 <?php
-if(!defined('MYDEBUG')){
-	define('MYDEBUG',0);
-}
 /**
  * Extract data as object or array from plain text or html
  * @author  shiplu<shiplu.net@gmail.com>
@@ -123,3 +120,4 @@ class DataExtractor{
 	}
 }
 ?>
+
