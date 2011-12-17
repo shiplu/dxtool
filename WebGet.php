@@ -1,5 +1,4 @@
 <?php
-
 class WebGet{
 	/**
 	 * Enables debugging. If enabled lot of information will be printed. 
@@ -331,3 +330,4 @@ class WebGet{
 	}
 }
 ?>
+
