@@ -30,4 +30,7 @@ $dx->anchor_urls = DataExtractor::PATTERN_HTML_ANCHOR_URL_ALL;
 
 print_r($dx->extractArray());
 
+$content = $w->requestContent('https://api.twitter.com/1/statuses/user_timeline.json?include_entities=true&incslude_rts=0&screen_name=microsoft&count=200&exclude_replies=1&contributor_details=0');
+
+print_r(json_decode($content, true));
 ?>
