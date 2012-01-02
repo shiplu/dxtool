@@ -1,6 +1,12 @@
 <?php
 
 class WebGet {
+    /**
+     * Holds last error
+     */
+    public $error="";
+    public $errno=0;
+    public $error_info;
 
     /**
      * Enables debugging. If enabled lot of information will be printed. 
@@ -168,7 +174,7 @@ class WebGet {
         if ($this->useCache) {
             if (file_exists($cache_file) && 0 != filesize($cache_file)) {
                 //Checking if cache is expired
-                if ((mktime() - filemtime($cache_file)) < $this->cacheMaxAge) {
+                if ((time() - filemtime($cache_file)) <= $this->cacheMaxAge) {
                     $this->cachedContent = file_get_contents($cache_file);
                     return $this->cachedContent;
                 }
@@ -298,8 +304,9 @@ class WebGet {
         endif;
 
         if (curl_errno($ch) > 0) {
-            trigger_error("Curl Error: " . curl_error($ch));
-            print_r(curl_getinfo($ch));
+            $this->error = "Curl Error: " . curl_error($ch);
+            $this->error_info = curl_getinfo($ch);
+            $this->errno = 1;
         }
         curl_close($ch);
 
