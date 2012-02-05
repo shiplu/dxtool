@@ -1,7 +1,7 @@
 <?php
 
-require 'DataExtractor.php';
-require 'WebGet.php';
+require '../DataExtractor.php';
+require '../WebGet.php';
 
 $google_new_feed = 'http://news.google.com/news?pz=1&cf=all&ned=in&hl=en&output=rss';
 
