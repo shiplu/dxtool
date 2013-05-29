@@ -1,11 +1,12 @@
 <?php
 
 class WebGet {
+
     /**
      * Holds last error
      */
-    public $error="";
-    public $errno=0;
+    public $error = "";
+    public $errno = 0;
     public $error_info;
 
     /**
@@ -30,25 +31,25 @@ class WebGet {
      * Content caching will be enabled if set to true
      * @var boolean 
      */
-    public $useCache = false;
+    protected $useCache = false;
 
     /**
      * Maximum age of cache before its renewd
      * @var int age of cache in seconds
      */
-    public $cacheMaxAge = 10800;
+    protected $cacheMaxAge = 10800;
 
     /**
      * location of the cache files to be stored 
      * @var string path of the directory 
      */
-    public $cacheLocation = '';
+    protected $cacheLocation = '';
 
     /**
      * Whether compressed output will be decompressed
      * @var boolean 
      */
-    public $decompressOutput = true;
+    protected $decompressOutput = true;
 
     /**
      * First header line
@@ -78,23 +79,23 @@ class WebGet {
      * Any proxy server that will be used 
      * @var string ip address of hostname/domain name of proxy server
      */
-    public $proxyServer = "";
+    protected $proxyServer = "";
 
     /**
      * Port number of proxy server
      * @var int proxy server port
      */
-    public $proxyPort = "";
+    protected $proxyPort = "";
 
     /**
      * Username for proxy server authentication
      */
-    public $proxyUser = "";
+    protected $proxyUser = "";
 
     /**
      * Password for proxy server authentication
      */
-    public $proxyPassword = "";
+    protected $proxyPassword = "";
 
     /**
      * Last requested content is cached here
@@ -112,12 +113,7 @@ class WebGet {
      * will be passed with each request
      * @var array
      */
-    public $defaultHeaders = array(
-        "User-agent" => "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.16) Gecko/20080702 Firefox/2.0.0.16",
-        "Accept" => "text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8",
-        "Accept-language" => "en-us,en;q=0.7,bn;q=0.3",
-        "Accept-charset" => "ISO-8859-1,utf-8;q=0.7,*;q=0.7"
-    );
+    protected $defaultHeaders = array();
     /**
      * Denotes the format of the header would be an array of header lines.
      */
@@ -128,7 +124,12 @@ class WebGet {
     const HEADER_FORMAT_STRING=2;
 
     public function __construct() {
-        
+        $this->defaultHeaders = array(
+            "User-agent" => "WebGet/http://github.com/shiplu/dxtool",
+            "Accept" => "text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8",
+            "Accept-language" => "en-us,en;q=0.7,bn;q=0.3",
+            "Accept-charset" => "ISO-8859-1,utf-8;q=0.7,*;q=0.7"
+        );
     }
 
     public function __destruct() {
@@ -332,6 +333,23 @@ class WebGet {
         }
 
         return strlen($header);
+    }
+
+    public function setup_cache($duration, $location='/tmp') {
+        $this->useCache = false;
+
+        if ($duration > 0 && is_dir($location) && is_writable($location)) {
+            $this->useCache = true;
+            $this->cacheLocation = $location;
+            $this->cacheMaxAge = $duration;
+        }
+    }
+
+    public function setup_proxy($server, $port, $username=null, $password=null) {
+        $this->proxyUser = is_null($username) ? "" : $username;
+        $this->proxyPassword = is_null($password) ? "" : $password;
+        $this->proxyPort = is_int($port) ? $port : $this->proxyPort;
+        $this->proxyServer = (is_null($server) || empty($server)) ? $server : $this->proxyServer;
     }
 
     protected function gzdecode($data) {

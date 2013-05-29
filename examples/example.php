@@ -8,9 +8,7 @@ $google_new_feed = 'http://news.google.com/news?pz=1&cf=all&ned=in&hl=en&output=
 $w = new WebGet();
 
 // using cache to prevent repetitive download
-$w->useCache = true;
-$w->cacheLocation = '/tmp';
-$w->cacheMaxAge = 3600;
+$w->setup_cache(3600, '/tmp');
 
 
 
