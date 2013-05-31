@@ -1,7 +1,6 @@
 <?php
 
-require '../AbstractExtractor.php';
-require '../HTMLXPathExtractor.php';
+require '../ExtractorFactory.php';
 require '../WebGet.php';
 
 $url = 'http://newyork.craigslist.org/search/jjj?addFour=part-time';
@@ -13,7 +12,7 @@ $w->setup_cache(3600, '/tmp');
 
 
 $content = $w->requestContent($url);
-$xpe = new HTMLXPathExtractor($content); 
+$xpe = ExtractorFactory::create('html-xpath', $content); 
 
 // the text part we want to match must be in the first subpattern
 $xpe->p= '//p[@class="row"]/span[@class="pl"]/a/text()';
