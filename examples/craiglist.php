@@ -1,6 +1,7 @@
 <?php
 
-require '../DataExtractor.php';
+require '../AbstractExtractor.php';
+require '../HTMLXPathExtractor.php';
 require '../WebGet.php';
 
 $url = 'http://newyork.craigslist.org/search/jjj?addFour=part-time';
@@ -12,9 +13,9 @@ $w->setup_cache(3600, '/tmp');
 
 
 $content = $w->requestContent($url);
-$dx = new DataExtractor($content); 
+$xpe = new HTMLXPathExtractor($content); 
 
 // the text part we want to match must be in the first subpattern
-$dx->p= '|</small>\s*<a[^>]+>([^<]+)<|a';
-print_r($dx->extractArray());
+$xpe->p= '//p[@class="row"]/span[@class="pl"]/a/text()';
+print_r($xpe->extract());
 ?>
