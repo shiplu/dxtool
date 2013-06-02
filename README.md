@@ -22,7 +22,8 @@ Usage
     <?php 
     // include libraries. 
     require 'WebGet.php';
-    require 'DataExtractor.php';
+    require 'ExtractorFactory.php';
+    
 
     // initialize webget lib
     $wget = new WebGet();
@@ -30,15 +31,28 @@ Usage
     // fetch the content
     $content = $wget->requestContent("http://some.domain.com/folder/file.ext");
 
-    // initialize DataExtractor lib
-    $dx = new DataExtractor($content);
+    // initialize regular expression powered extractor
+    $dx = ExtractorFactory::create('regex', $content);
 
     // setup search pattern
     $dx->a_pattern_name = '/regular-expression/';
     $dx->another_pattern_name = '/another-regular-expression/';
 
     // extract all the data
-    $data = $dx->extractArray();
+    $data = $dx->extract();
+
+    print_r($data);
+
+
+    // initialize xpath powered extractor
+    $dx = ExtractorFactory::create('html-xpath', $content);
+    
+    // search pattern
+    $dx->data_name = '//some/xpath';
+    $dx->other_name = '//other/xpath/expression';
+
+    // extract
+    $data = $dx->extract();
 
     print_r($data);
     ?>
