@@ -202,21 +202,36 @@ class WebGet {
         $u = parse_url($url);
         // url scheme (protocol) and host name is a must
         // If not found return right now.
-        if (!isset($url['scheme']) || !isset($url['host'])) {
+        if (!isset($u['scheme']) || !isset($u['host'])) {
             return false;
         }
         // if path is set it will be used
         if (isset($u['path'])) {
             // If query string is found it will be used
             if (isset($u['query'])) {
-                $url = "{$u['scheme']}://{$u['host']}{$u['path']}?{$u['query']}";
+                if(isset($u['port'])){
+                    $url = "{$u['scheme']}://{$u['host']}:{$u['port']}{$u['path']}?{$u['query']}";
+                }else{
+                    $url = "{$u['scheme']}://{$u['host']}{$u['path']}?{$u['query']}";
+                }
+               
             } else {
                 // query stirng not found. so wont be used.
-                $url = "{$u['scheme']}://{$u['host']}{$u['path']}";
+                if(isset($u['port'])){
+                    $url = "{$u['scheme']}://{$u['host']}:{$u['port']}{$u['path']}";
+                }else{
+                    $url = "{$u['scheme']}://{$u['host']}{$u['path']}";
+                }
             }
         } else {
             // Path is not found. so not using.
-            $url = "{$u['scheme']}://{$u['host']}";
+            if(isset($u['port'])){
+                $url = "{$u['scheme']}://{$u['host']}:{$u['port']}";
+            }else{
+                $url = "{$u['scheme']}://{$u['host']}";
+            }
+            
+            
         }
         // only process get variables if its provided valid
         if (is_array($getvars) && count($getvars) > 0) {
